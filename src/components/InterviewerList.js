@@ -13,7 +13,7 @@ function InterviewerList(props) {
         key={iterator.id}
         {...iterator}
         selected={iterator.id === interviewer}
-        setInterviewer={(event) => setInterviewer(iterator.id)}
+        setInterviewer={() => setInterviewer(iterator.id)}
       />
     );
   });
