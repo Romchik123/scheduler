@@ -15,6 +15,12 @@ import InterviewerListItem from "components/InterviewerListItem";
 
 import InterviewerList from "components/InterviewerList";
 
+import Appointment from "components/Appointment/index";
+
+import Header from "components/Appointment/Header";
+
+import Empty from "components/Appointment/Empty";
+
 // Button ::::::::::::::::::::::::::::::::::::::
 storiesOf("Button", module)
   .addParameters({
@@ -134,3 +140,17 @@ storiesOf("InterviewerList", module)
       onChange={action("setInterviewer")}
     />
   ));
+
+//////////////////    Appointment    //////////////////////////
+
+// Appointment ::::::::::::::::::::::::::::::::::::
+storiesOf("Appointment", module)
+  .addParameters({
+    backgrounds: [{ name: "white", value: "#fff", default: true }],
+  })
+  .add("Appointment", () => <Appointment />)
+  .add("Appointment with Time", () => <Appointment time="12pm" />)
+  // Header ::::::::::::::::::::::::::::::::
+  .add("Header", () => <Header time="12pm" />)
+  // Empty ::::::::::::::::::::::::::::::::
+  .add("Empty", () => <Empty onAdd={action("onAdd")} />);
