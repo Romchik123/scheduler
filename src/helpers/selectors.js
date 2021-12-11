@@ -16,6 +16,9 @@ export function getAppointmentsForDay(state, day) {
   return newApp;
 }
 
+
+
+
 // getInterview function ::
 export function getInterview(state, interview) {
   if (interview === null) {
@@ -33,3 +36,25 @@ export function getInterview(state, interview) {
 
   return newObj;
 }
+
+
+
+
+// getAppointmentsForDay function ::
+export function getInterviewersForDay(state, day) {
+  const filteredDays = state.days.filter((itr) => {
+    return itr.name === day;
+  });
+
+  if (filteredDays.length === 0) {
+    return filteredDays;
+  }
+
+  const apps = filteredDays[0].interviewer;
+
+  const newApp = apps.map((app) => {
+    return state.interviewer[app];
+  });
+  return newApp;
+}
+
