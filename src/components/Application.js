@@ -1,3 +1,4 @@
+// Imports ::
 import React, { useState, useEffect } from "react";
 
 import axios from "axios";
@@ -16,6 +17,7 @@ import { getInterview } from "../helpers/selectors";
 
 // Application Component ::
 export default function Application(props) {
+  // useState ::
   const [state, setState] = useState({
     day: "Monday",
     days: [],
@@ -24,6 +26,7 @@ export default function Application(props) {
 
   const setDay = (day) => setState({ ...state, day });
 
+  // Bringing the data from API ::
   useEffect(() => {
     Promise.all([
       axios.get("/api/days"),
@@ -45,23 +48,17 @@ export default function Application(props) {
     });
   }, []);
 
-  const dailyAppointments = getAppointmentsForDay(state, state.day);
-
-  // mistake?! - do I need to delete this part now?
-  // const parsedApps = dailyAppointments.map((appointment) => {
-  //   return <Appointment key={appointment.id} {...appointment} />;
-  // });
-
-  /////////////////   >>>>>>>>>>>>>>>    ///////////////////////////////////////////
-
-  // mistake?! - suppose to use getInterviewersForDay or not?!
+  /////////////////////////////////////////////////////////////////////////
+  // Map through getInterviewersForDay function - then...
+  // Pass parseInterviewers to Appointment component ::
   const interviewers = getInterviewersForDay(state, state.day);
   const parseInterviewers = interviewers.map((int) => {
-    return int
-  })
+    return int;
+  });
 
-  console.log("+++++++++222222222++++++++++++", parseInterviewers);
-
+  // Map through getAppointmentsForDay function - then...
+  // Pass interview to Appointment component ::
+  const dailyAppointments = getAppointmentsForDay(state, state.day);
 
   const schedule = dailyAppointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
@@ -76,8 +73,7 @@ export default function Application(props) {
       />
     );
   });
-
-  /////////////////  <<<<<<<<<<<<<<     ///////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////
 
   return (
     <main className="layout">
@@ -98,7 +94,6 @@ export default function Application(props) {
         />
       </section>
 
-      {/* mistake?! */}
       <section className="schedule">{schedule}</section>
     </main>
   );
