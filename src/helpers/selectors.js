@@ -16,9 +16,6 @@ export function getAppointmentsForDay(state, day) {
   return newApp;
 }
 
-
-
-
 // getInterview function ::
 export function getInterview(state, interview) {
   if (interview === null) {
@@ -37,9 +34,6 @@ export function getInterview(state, interview) {
   return newObj;
 }
 
-
-
-
 // getAppointmentsForDay function ::
 export function getInterviewersForDay(state, day) {
   const filteredDays = state.days.filter((itr) => {
@@ -50,11 +44,10 @@ export function getInterviewersForDay(state, day) {
     return filteredDays;
   }
 
-  const apps = filteredDays[0].interviewer;
+  const apps = filteredDays[0].interviewers;
 
   const newApp = apps.map((app) => {
-    return state.interviewer[app];
+    return state.interviewers[app];
   });
   return newApp;
 }
-

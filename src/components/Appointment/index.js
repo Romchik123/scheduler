@@ -13,7 +13,7 @@ import "components/Appointment/styles.scss";
 import useVisualMode from "hooks/useVisualMode";
 
 export default function Appointment(props) {
-  const { time, interview } = props;
+  const { time, interview, interviewers } = props;
 
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
@@ -45,7 +45,7 @@ export default function Appointment(props) {
       {mode === SHOW && (
         <Show student={interview.student} interviewer={interview.interviewer} />
       )}
-      {mode === CREATE && <Form interviewers={[]}
+      {mode === CREATE && <Form interviewers={interviewers}
       onCancel={back}
       />}
     </article>
