@@ -15,19 +15,25 @@ import "components/Appointment/styles.scss";
 
 import useVisualMode from "hooks/useVisualMode";
 
+import Confirm from "./Confirm";
+
 // Appointment component ::
 export default function Appointment(props) {
-  const { id, time, interview, interviewers, bookInterview } = props;
+  const { id, time, interview, interviewers, bookInterview, cancelInterview } =
+    props;
 
   // Built Hook ::
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
   const CREATE = "CREATE";
   const SAVING = "SAVING";
+  const CONFIRM = "CONFIRM";
+  const DELETE = "DELETE";
 
   const { mode, transition, back } = useVisualMode(interview ? SHOW : EMPTY);
 
-  // Function ::
+  /////////////////   Functions ::    ///////////////////////////
+  // Save function ::
   function save(name, interviewer) {
     const interview = {
       student: name,
@@ -39,15 +45,35 @@ export default function Appointment(props) {
     });
   }
 
+  // Delete function ::
+  function cancel() {
+    transition(DELETE);
+    cancelInterview(id).then(() => {
+      transition(EMPTY);
+    });
+  }
+
   // Return :::::::::::::::::::::::::::::::::::::::::::::::::::
   return (
     <article className="appointment">
       <Header time={time} />
 
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
-      {mode === SAVING && <Status message="Saving" />}
+      {mode === SAVING && <Status message="Saving..." />}
       {mode === SHOW && (
-        <Show student={interview.student} interviewer={interview.interviewer} />
+        <Show
+          student={interview.student}
+          interviewer={interview.interviewer}
+          onDelete={() => transition(CONFIRM)}
+        />
+      )}
+      {mode === DELETE && <Status message="Deleting..." />}
+      {mode === CONFIRM && (
+        <Confirm
+          onConfirm={cancel}
+          onCancel={back}
+          message="Are you sure you want to delete?"
+        />
       )}
       {mode === CREATE && (
         <Form interviewers={interviewers} onCancel={back} onSave={save} />
