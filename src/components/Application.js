@@ -17,7 +17,7 @@ import { getInterview } from "../helpers/selectors";
 
 // Application Component ::
 export default function Application(props) {
-  // useState ::
+  // useState, setState ::
   const [state, setState] = useState({
     day: "Monday",
     days: [],
@@ -48,6 +48,25 @@ export default function Application(props) {
     });
   }, []);
 
+  // Functions ::
+  function bookInterview(id, interview) {
+    console.log(id, interview);
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview },
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment,
+    };
+
+    return axios
+      .put(`/api/appointments/${id}`, { interview })
+      .then((response) => {
+        setState({ ...state, appointments });
+      });
+  }
+
   /////////////////////////////////////////////////////////////////////////
   // Map through getInterviewersForDay function - then...
   // Pass parseInterviewers to Appointment component ::
@@ -70,9 +89,11 @@ export default function Application(props) {
         time={appointment.time}
         interview={interview}
         interviewers={parseInterviewers}
+        bookInterview={bookInterview}
       />
     );
   });
+
   /////////////////////////////////////////////////////////////////////////
 
   return (

@@ -14,7 +14,3 @@ export default function Status(props) {
     </main>
   );
 }
-
-
-
-
