@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 
 import axios from "axios";
 
+import { getAppointmentsForDay } from "../helpers/selectors";
+
 export default function useApplicationData() {
   // useState ::
   const [state, setState] = useState({
@@ -49,7 +51,22 @@ export default function useApplicationData() {
     return axios
       .put(`/api/appointments/${id}`, { interview })
       .then((response) => {
-        setState({ ...state, appointments });
+        const newState = { ...state, appointments };
+        const appointmentsSpots = getAppointmentsForDay(newState, state.day);
+        let index = 0;
+        for (const key in appointmentsSpots) {
+          const value = appointmentsSpots[key].interview;
+          if (value === null) {
+            index++;
+          }
+        }
+        newState.days = newState.days.map((day) => {
+          if (state.day === day.name) {
+            return { ...day, spots: index };
+          }
+          return day;
+        });
+        setState(newState);
       });
   };
 
@@ -64,7 +81,22 @@ export default function useApplicationData() {
       [id]: appointment,
     };
     return axios.delete(`/api/appointments/${id}`).then((response) => {
-      setState({ ...state, appointments });
+      const newState = { ...state, appointments };
+      const appointmentsSpots = getAppointmentsForDay(newState, state.day);
+      let index = 0;
+      for (const key in appointmentsSpots) {
+        const value = appointmentsSpots[key].interview;
+        if (value === null) {
+          index++;
+        }
+      }
+      newState.days = newState.days.map((day) => {
+        if (state.day === day.name) {
+          return { ...day, spots: index };
+        }
+        return day;
+      });
+      setState(newState);
     });
   };
 

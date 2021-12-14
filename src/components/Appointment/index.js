@@ -37,9 +37,6 @@ export default function Appointment(props) {
 
   const { mode, transition, back } = useVisualMode(interview ? SHOW : EMPTY);
 
-  const [currentStudent, setCurrentStudent] = useState("");
-  const [currentInterviewer, setCurrentInterviewer] = useState({});
-
   /////////////////   Functions ::    ///////////////////////////
   // Save function ::
   function save(name, interviewer) {
@@ -62,8 +59,6 @@ export default function Appointment(props) {
     transition(DELETE, true);
     cancelInterview(id)
       .then(() => {
-        setCurrentStudent("");
-        setCurrentInterviewer({});
         transition(EMPTY);
       })
       .catch((err) => {
@@ -72,10 +67,8 @@ export default function Appointment(props) {
   }
 
   // Edit function ::
-  function edit(student, interviewer) {
+  function edit() {
     transition(EDIT);
-    setCurrentStudent(student);
-    setCurrentInterviewer(interviewer);
   }
 
   // Return :::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -109,13 +102,16 @@ export default function Appointment(props) {
           message="Are you sure you want to delete?"
         />
       )}
-      {(mode === CREATE || mode === EDIT) && (
+      {mode === CREATE && (
+        <Form interviewers={interviewers} onCancel={back} onSave={save} />
+      )}
+      {mode === EDIT && (
         <Form
           interviewers={interviewers}
           onCancel={back}
           onSave={save}
-          student={currentStudent}
-          interviewer={currentInterviewer}
+          student={interview.student}
+          interviewer={interview.interviewer}
         />
       )}
     </article>

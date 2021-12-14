@@ -21,7 +21,6 @@ export default function Application(props) {
   const { state, setDay, bookInterview, cancelInterview } =
     useApplicationData();
 
-  /////////////////////////////////////////////////////////////////////////
   // Map through getInterviewersForDay function - then...
   // Pass parseInterviewers to Appointment component ::
   const interviewers = getInterviewersForDay(state, state.day);
