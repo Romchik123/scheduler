@@ -12,7 +12,7 @@ function InterviewerList(props) {
       <InterviewerListItem
         key={iterator.id}
         {...iterator}
-        selected={iterator.id === value}
+        selected={iterator.id === (value.id || value)}
         setInterviewer={() => onChange(iterator.id)}
       />
     );

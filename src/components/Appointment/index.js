@@ -1,5 +1,5 @@
 // Imports ::
-import React from "react";
+import React, { useState } from "react";
 
 import Header from "./Header";
 
@@ -29,15 +29,18 @@ export default function Appointment(props) {
   const SAVING = "SAVING";
   const CONFIRM = "CONFIRM";
   const DELETE = "DELETE";
+  const EDIT = "EDIT";
 
   const { mode, transition, back } = useVisualMode(interview ? SHOW : EMPTY);
+  const [currentStudent, setCurrentStudent] = useState("");
+  const [currentInterviewer, setCurrentInterviewer] = useState({});
 
   /////////////////   Functions ::    ///////////////////////////
   // Save function ::
   function save(name, interviewer) {
     const interview = {
       student: name,
-      interviewer,
+      interviewer: interviewer.id || interviewer,
     };
     transition(SAVING);
     bookInterview(id, interview).then(() => {
@@ -49,8 +52,17 @@ export default function Appointment(props) {
   function cancel() {
     transition(DELETE);
     cancelInterview(id).then(() => {
+      setCurrentStudent("");
+      setCurrentInterviewer({});
       transition(EMPTY);
     });
+  }
+
+  // Edit function ::
+  function edit(student, interviewer) {
+    transition(EDIT);
+    setCurrentStudent(student);
+    setCurrentInterviewer(interviewer);
   }
 
   // Return :::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -65,6 +77,7 @@ export default function Appointment(props) {
           student={interview.student}
           interviewer={interview.interviewer}
           onDelete={() => transition(CONFIRM)}
+          onEdit={edit}
         />
       )}
       {mode === DELETE && <Status message="Deleting..." />}
@@ -75,8 +88,14 @@ export default function Appointment(props) {
           message="Are you sure you want to delete?"
         />
       )}
-      {mode === CREATE && (
-        <Form interviewers={interviewers} onCancel={back} onSave={save} />
+      {(mode === CREATE || mode === EDIT) && (
+        <Form
+          interviewers={interviewers}
+          onCancel={back}
+          onSave={save}
+          student={currentStudent}
+          interviewer={currentInterviewer}
+        />
       )}
     </article>
   );
