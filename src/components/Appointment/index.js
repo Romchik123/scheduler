@@ -17,6 +17,8 @@ import useVisualMode from "hooks/useVisualMode";
 
 import Confirm from "./Confirm";
 
+import Error from "./Error";
+
 // Appointment component ::
 export default function Appointment(props) {
   const { id, time, interview, interviewers, bookInterview, cancelInterview } =
@@ -30,8 +32,11 @@ export default function Appointment(props) {
   const CONFIRM = "CONFIRM";
   const DELETE = "DELETE";
   const EDIT = "EDIT";
+  const ERROR_SAVE = "ERROR_SAVE";
+  const ERROR_DELETE = "ERROR_DELETE";
 
   const { mode, transition, back } = useVisualMode(interview ? SHOW : EMPTY);
+
   const [currentStudent, setCurrentStudent] = useState("");
   const [currentInterviewer, setCurrentInterviewer] = useState({});
 
@@ -43,19 +48,27 @@ export default function Appointment(props) {
       interviewer: interviewer.id || interviewer,
     };
     transition(SAVING);
-    bookInterview(id, interview).then(() => {
-      transition(SHOW);
-    });
+    bookInterview(id, interview)
+      .then(() => {
+        transition(SHOW);
+      })
+      .catch((err) => {
+        transition(ERROR_SAVE, true);
+      });
   }
 
   // Delete function ::
   function cancel() {
-    transition(DELETE);
-    cancelInterview(id).then(() => {
-      setCurrentStudent("");
-      setCurrentInterviewer({});
-      transition(EMPTY);
-    });
+    transition(DELETE, true);
+    cancelInterview(id)
+      .then(() => {
+        setCurrentStudent("");
+        setCurrentInterviewer({});
+        transition(EMPTY);
+      })
+      .catch((err) => {
+        transition(ERROR_DELETE, true);
+      });
   }
 
   // Edit function ::
@@ -72,6 +85,14 @@ export default function Appointment(props) {
 
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
       {mode === SAVING && <Status message="Saving..." />}
+      {mode === ERROR_DELETE && (
+        <Error
+          onClose={() => {
+            transition(SHOW, true);
+          }}
+          message="Could not cancel the appointment"
+        />
+      )}
       {mode === SHOW && (
         <Show
           student={interview.student}
