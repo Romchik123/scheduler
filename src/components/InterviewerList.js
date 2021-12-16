@@ -7,8 +7,10 @@ import InterviewerListItem from "components/InterviewerListItem";
 import "components/InterviewerList.scss";
 
 function InterviewerList(props) {
+  // Props ::
   const { interviewers, value, onChange } = props;
 
+  // Map function ::
   const parsedInterviewerListItem = interviewers.map((iterator) => {
     return (
       <InterviewerListItem
@@ -20,6 +22,7 @@ function InterviewerList(props) {
     );
   });
 
+  // Return :: /////////////////
   return (
     <section className="interviewers">
       <h4 className="interviewers__header text--light">Interviewer</h4>

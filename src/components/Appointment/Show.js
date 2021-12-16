@@ -1,8 +1,10 @@
 import React from "react";
 
 export default function Show(props) {
+  // Props ::
   const { student, interviewer, onEdit, onDelete } = props;
 
+  // Return ::
   return (
     <main className="appointment__card appointment__card--show">
       <section className="appointment__card-left">

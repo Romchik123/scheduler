@@ -5,11 +5,14 @@ import classNames from "classnames";
 import "components/DayListItem.scss";
 
 export default function DayListItem(props) {
+
+  // classNames ::
   const dayClass = classNames("day-list__item", {
     "day-list__item--selected": props.selected === true,
     "day-list__item--full": props.spots === 0,
   });
 
+  // formatSpots Function ::
   const formatSpots = (params) => {
     let result = "";
 
@@ -25,6 +28,7 @@ export default function DayListItem(props) {
     return result;
   };
 
+  // Return :: //////////////////
   return (
     <li
       data-testid="day"

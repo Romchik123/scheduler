@@ -19,12 +19,12 @@ import Confirm from "./Confirm";
 
 import Error from "./Error";
 
-// Appointment component ::
 export default function Appointment(props) {
+  // Props ::
   const { id, time, interview, interviewers, bookInterview, cancelInterview } =
     props;
 
-  // Built Hook ::
+  // Modes ::
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
   const CREATE = "CREATE";
@@ -71,7 +71,7 @@ export default function Appointment(props) {
     transition(EDIT);
   }
 
-  // Return :::::::::::::::::::::::::::::::::::::::::::::::::::
+  // Return :: /////////////////////////////////
   return (
     <article className="appointment">
       <Header time={time} />

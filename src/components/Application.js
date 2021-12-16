@@ -17,7 +17,7 @@ import useApplicationData from "hooks/useApplicationData";
 
 // Application Component ::
 export default function Application(props) {
-  // Importing all the hooks ::
+  // Props ::
   const { state, setDay, bookInterview, cancelInterview } =
     useApplicationData();
 
@@ -48,7 +48,7 @@ export default function Application(props) {
     );
   });
 
-  /////////////////////////////////////////////////////////////////////////
+  /////////  Return ::   ////////////////////////////////////////////////////////////////
 
   return (
     <main className="layout">
